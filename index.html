@@ -634,7 +634,8 @@
 
     <script>
         let isLoading = false;
-        const API_BASE = window.location.hostname.includes('onrender.com') ? 'https://ai-wedding-planner.onrender.com' : '';
+        const LOCAL_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0'];
+        const API_BASE = LOCAL_HOSTS.includes(window.location.hostname) ? '' : 'https://ai-wedding-planner.onrender.com';
 
         async function loadSuggestions() {
             try {
