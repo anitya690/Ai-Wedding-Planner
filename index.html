@@ -3,157 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeddingWise AI - Your Wedding Planning Assistant</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>WeddingWise AI - 3D Wedding Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --ink: #271720;
+            --muted: rgba(39, 23, 32, 0.68);
+            --rose: #d94f70;
+            --rose-dark: #ac3155;
+            --gold: #dba84d;
+            --aqua: #4bb7aa;
+            --paper: rgba(255, 252, 249, 0.84);
+            --paper-strong: rgba(255, 255, 255, 0.94);
+            --line: rgba(255, 255, 255, 0.46);
+            --shadow: 0 28px 70px rgba(83, 35, 56, 0.24);
+            --shadow-soft: 0 16px 34px rgba(83, 35, 56, 0.16);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #fff;
+        html {
+            scroll-behavior: smooth;
         }
 
-        /* Wedding-themed background */
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 12% 18%, rgba(75, 183, 170, 0.25), transparent 28%),
+                radial-gradient(circle at 82% 8%, rgba(219, 168, 77, 0.26), transparent 30%),
+                linear-gradient(135deg, #fff6f7 0%, #f7ede7 45%, #e8f5f2 100%);
+        }
+
         body::before {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg');
+            inset: 0;
+            z-index: -3;
+            background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.76)), url('https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg');
             background-size: cover;
             background-position: center;
-            opacity: 0.08;
+            filter: saturate(1.08);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: -20%;
+            z-index: -2;
+            background:
+                linear-gradient(115deg, transparent 0 28%, rgba(255,255,255,0.38) 29% 30%, transparent 31% 100%),
+                linear-gradient(62deg, transparent 0 58%, rgba(255,255,255,0.24) 59% 60%, transparent 61% 100%);
+            animation: sheen 14s linear infinite;
             pointer-events: none;
-            z-index: -1;
         }
 
-        .container {
-            max-width: 1400px;
+        @keyframes sheen {
+            from { transform: translate3d(-4%, -2%, 0) rotate(0deg); }
+            to { transform: translate3d(4%, 2%, 0) rotate(1deg); }
+        }
+
+        .scene {
+            width: min(1440px, 100%);
+            min-height: 100vh;
             margin: 0 auto;
-            padding: 20px;
+            padding: 28px clamp(16px, 4vw, 48px) 22px;
+            perspective: 1400px;
         }
 
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 40px 20px 20px;
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 26px;
         }
 
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #ffd6e0, #ffb6c1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        .tagline {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.85);
-            letter-spacing: 1px;
-        }
-
-        .ring-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        /* Main Layout */
-        .main-grid {
+        .brand-mark {
+            width: 54px;
+            height: 54px;
             display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 25px;
-            margin-top: 30px;
+            place-items: center;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1.55rem;
+            background: linear-gradient(145deg, var(--rose), var(--gold));
+            box-shadow: 0 16px 34px rgba(217, 79, 112, 0.34), inset 0 1px 0 rgba(255,255,255,0.45);
+            transform: rotate(-6deg);
         }
 
-        /* Sidebar */
-        .sidebar {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 20px;
-            border: 1px solid rgba(255,255,255,0.2);
-            height: fit-content;
-        }
-
-        .sidebar h3 {
+        .brand-copy h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            margin-bottom: 15px;
+            font-size: clamp(2rem, 5vw, 4.4rem);
+            line-height: 0.95;
+            letter-spacing: 0;
+        }
+
+        .brand-copy p {
+            margin-top: 8px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .status-pill {
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 12px 16px;
+            border: 1px solid rgba(255,255,255,0.55);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.54);
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(18px);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .pulse {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--aqua);
+            box-shadow: 0 0 0 8px rgba(75,183,170,0.16);
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(260px, 330px) minmax(0, 1fr);
+            gap: clamp(18px, 3vw, 34px);
+            align-items: stretch;
+        }
+
+        .panel {
+            position: relative;
+            border: 1px solid var(--line);
+            background: var(--paper);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(22px);
+            transform-style: preserve-3d;
+            transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+        }
+
+        .panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255,255,255,0.82), transparent 42%);
+            pointer-events: none;
+        }
+
+        .panel:hover {
+            transform: translateY(-8px) rotateX(1.5deg) rotateY(-1.2deg);
+            box-shadow: 0 34px 82px rgba(83, 35, 56, 0.32);
+            border-color: rgba(255,255,255,0.75);
+        }
+
+        .sidebar {
+            min-height: 640px;
+            border-radius: 26px;
+            padding: 22px;
+        }
+
+        .section-title {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-weight: 800;
+            color: var(--ink);
+        }
+
+        .section-title span {
+            color: var(--rose-dark);
         }
 
         .suggestions-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            position: relative;
+            display: grid;
+            gap: 12px;
+            z-index: 1;
         }
 
         .suggestion-chip {
-            background: rgba(255,255,255,0.15);
-            padding: 10px 15px;
-            border-radius: 12px;
+            width: 100%;
+            border: 1px solid rgba(172, 49, 85, 0.12);
+            border-radius: 16px;
+            padding: 13px 14px;
+            color: var(--ink);
+            background: rgba(255,255,255,0.66);
+            box-shadow: 0 10px 22px rgba(83, 35, 56, 0.10);
             cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            font-weight: 650;
+            line-height: 1.35;
+            transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease, color 220ms ease;
         }
 
         .suggestion-chip:hover {
-            background: rgba(255,255,255,0.25);
-            transform: translateX(5px);
+            color: #fff;
+            background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+            box-shadow: 0 18px 32px rgba(172, 49, 85, 0.28);
+            transform: translateX(8px) translateZ(16px);
         }
 
-        /* Chat Area */
-        .chat-area {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.2);
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 180px);
-            min-height: 500px;
+        .planner-card {
+            position: relative;
+            z-index: 1;
+            margin-top: 22px;
+            padding: 18px;
+            border-radius: 20px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.72), rgba(255,248,238,0.7));
+            border: 1px solid rgba(255,255,255,0.66);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
         }
 
-        .image-preview {
-            padding: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .planner-card p {
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        .mini-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .mini-stat {
+            padding: 12px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.62);
+            border: 1px solid rgba(255,255,255,0.62);
+        }
+
+        .mini-stat strong {
+            display: block;
+            color: var(--rose-dark);
+            font-size: 1.1rem;
+        }
+
+        .mini-stat small {
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .chat-shell {
+            display: grid;
+            grid-template-rows: auto minmax(320px, 1fr) auto;
+            min-height: 640px;
+            height: calc(100vh - 170px);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .hero-strip {
+            position: relative;
+            min-height: 210px;
+            overflow: hidden;
         }
 
         .wedding-img {
             width: 100%;
-            height: 200px;
+            height: 100%;
+            min-height: 210px;
             object-fit: cover;
-            border-radius: 16px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            display: block;
+            transform: scale(1.02);
+            transition: transform 450ms ease, filter 450ms ease;
+        }
+
+        .chat-shell:hover .wedding-img {
+            transform: scale(1.08) translateZ(20px);
+            filter: saturate(1.08) contrast(1.03);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px;
+            color: #fff;
+            background: linear-gradient(180deg, rgba(39,23,32,0.05), rgba(39,23,32,0.70));
+        }
+
+        .hero-overlay h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.45rem, 3vw, 2.55rem);
+            line-height: 1.05;
+            text-shadow: 0 12px 24px rgba(0,0,0,0.28);
+        }
+
+        .hero-badge {
+            padding: 10px 13px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.18);
+            backdrop-filter: blur(16px);
+            font-size: 0.85rem;
+            font-weight: 800;
+            white-space: nowrap;
         }
 
         .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
+            position: relative;
+            z-index: 1;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 16px;
+            padding: 24px;
+            overflow-y: auto;
+            background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,248,246,0.62));
         }
 
         .message {
             display: flex;
+            align-items: flex-end;
             gap: 12px;
-            max-width: 80%;
+            max-width: min(82%, 760px);
+            animation: liftIn 260ms ease both;
+        }
+
+        @keyframes liftIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .message.user {
@@ -161,223 +352,305 @@
             flex-direction: row-reverse;
         }
 
-        .message.ai {
-            align-self: flex-start;
-        }
-
         .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.96), rgba(255,238,230,0.86));
+            box-shadow: 0 12px 22px rgba(83, 35, 56, 0.16);
+            font-size: 1.18rem;
         }
 
         .bubble {
-            background: rgba(255,255,255,0.15);
-            padding: 12px 16px;
-            border-radius: 18px;
-            line-height: 1.5;
-            font-size: 0.95rem;
+            padding: 14px 16px;
+            border-radius: 20px 20px 20px 8px;
+            color: var(--ink);
+            background: rgba(255,255,255,0.88);
+            box-shadow: 0 14px 28px rgba(83, 35, 56, 0.12);
+            border: 1px solid rgba(255,255,255,0.72);
+            line-height: 1.55;
+            font-size: 0.96rem;
         }
 
         .message.user .bubble {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-        }
-
-        .message.ai .bubble {
-            background: rgba(255,255,255,0.12);
+            color: #fff;
+            border-color: rgba(255,255,255,0.25);
+            border-radius: 20px 20px 8px 20px;
+            background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+            box-shadow: 0 18px 32px rgba(172, 49, 85, 0.25);
         }
 
         .typing {
             display: flex;
-            gap: 5px;
-            padding: 12px 16px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 18px;
+            gap: 6px;
             width: fit-content;
+            padding: 16px 18px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.86);
+            box-shadow: 0 14px 28px rgba(83, 35, 56, 0.12);
         }
 
         .typing span {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #fff;
-            animation: typing 1.4s infinite;
+            background: var(--rose);
+            animation: typing 1.1s infinite;
         }
 
-        .typing span:nth-child(2) { animation-delay: 0.2s; }
-        .typing span:nth-child(3) { animation-delay: 0.4s; }
+        .typing span:nth-child(2) { animation-delay: 0.16s; }
+        .typing span:nth-child(3) { animation-delay: 0.32s; }
 
         @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-            30% { transform: translateY(-8px); opacity: 1; }
+            0%, 70%, 100% { transform: translateY(0); opacity: 0.45; }
+            35% { transform: translateY(-7px); opacity: 1; }
         }
 
-        /* Input Area */
         .input-area {
-            padding: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 1;
             display: flex;
             gap: 12px;
+            padding: 18px;
+            border-top: 1px solid rgba(255,255,255,0.55);
+            background: rgba(255,255,255,0.76);
         }
 
         .chat-input {
+            min-width: 0;
             flex: 1;
-            padding: 14px 18px;
-            border: none;
-            border-radius: 30px;
-            background: rgba(255,255,255,0.15);
-            color: #fff;
-            font-size: 1rem;
+            border: 1px solid rgba(172, 49, 85, 0.13);
+            border-radius: 18px;
             outline: none;
+            padding: 16px 18px;
+            color: var(--ink);
+            background: rgba(255,255,255,0.9);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+            font: 600 1rem 'Inter', sans-serif;
+            transition: box-shadow 220ms ease, border-color 220ms ease, transform 220ms ease;
         }
 
         .chat-input::placeholder {
-            color: rgba(255,255,255,0.6);
+            color: rgba(39, 23, 32, 0.45);
+        }
+
+        .chat-input:focus {
+            border-color: rgba(217, 79, 112, 0.55);
+            box-shadow: 0 0 0 5px rgba(217,79,112,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+            transform: translateY(-2px);
         }
 
         .send-btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 30px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-            font-weight: 600;
+            flex: 0 0 auto;
+            border: 0;
+            border-radius: 18px;
+            padding: 0 22px;
+            min-width: 118px;
+            color: #fff;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            font: 800 0.98rem 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+            box-shadow: 0 18px 34px rgba(172, 49, 85, 0.28), inset 0 1px 0 rgba(255,255,255,0.28);
+            transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
         }
 
         .send-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(238, 90, 36, 0.4);
+            transform: translateY(-4px) translateZ(18px);
+            box-shadow: 0 24px 42px rgba(172, 49, 85, 0.36), inset 0 1px 0 rgba(255,255,255,0.36);
+            filter: saturate(1.08);
+        }
+
+        .send-btn:active {
+            transform: translateY(-1px) scale(0.98);
         }
 
         .send-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+            opacity: 0.62;
+            cursor: wait;
+            transform: none;
         }
 
-        /* Scrollbar */
         .chat-messages::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         .chat-messages::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
+            background: rgba(255,255,255,0.42);
         }
 
         .chat-messages::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.3);
-            border-radius: 10px;
+            background: rgba(172,49,85,0.32);
+            border-radius: 999px;
         }
 
-        /* Footer */
         .footer {
-            text-align: center;
-            padding: 30px 20px 20px;
-            color: rgba(255,255,255,0.6);
-            font-size: 0.85rem;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0 0;
+            color: rgba(39, 23, 32, 0.62);
+            font-size: 0.9rem;
+            font-weight: 700;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 920px) {
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
             .main-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .sidebar {
+                min-height: auto;
                 order: 2;
             }
-            
-            .chat-area {
+
+            .chat-shell {
+                min-height: 680px;
                 height: auto;
-                min-height: 450px;
-            }
-            
-            .message {
-                max-width: 95%;
-            }
-            
-            .logo {
-                font-size: 2rem;
             }
         }
 
-        .error-msg {
-            color: #ffa502;
-            text-align: center;
-            padding: 10px;
+        @media (max-width: 620px) {
+            .scene {
+                padding: 18px 12px 18px;
+            }
+
+            .brand {
+                align-items: flex-start;
+            }
+
+            .brand-mark {
+                width: 46px;
+                height: 46px;
+                border-radius: 14px;
+            }
+
+            .status-pill {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-overlay {
+                align-items: flex-start;
+                flex-direction: column;
+                justify-content: flex-end;
+            }
+
+            .message {
+                max-width: 96%;
+            }
+
+            .avatar {
+                width: 36px;
+                height: 36px;
+                flex-basis: 36px;
+            }
+
+            .input-area {
+                flex-direction: column;
+            }
+
+            .send-btn {
+                min-height: 52px;
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="ring-icon">💍</div>
-            <h1 class="logo">WeddingWise AI</h1>
-            <p class="tagline">Your Personal Wedding Planning Assistant | Plan Your Dream Wedding 💒</p>
-        </div>
-
-        <div class="main-grid">
-            <!-- Sidebar - Suggestions -->
-            <div class="sidebar">
-                <h3>✨ Quick Ideas</h3>
-                <div class="suggestions-list" id="suggestionsList">
-                    <div class="suggestion-chip">💭 Loading ideas...</div>
-                </div>
-                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
-                    <h3>💡 Tips</h3>
-                    <p style="font-size: 0.85rem; line-height: 1.5;">Ask me about budgets, venues, rituals, decorations, vendors, timeline, or honeymoon plans!</p>
+    <main class="scene">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true">💍</div>
+                <div class="brand-copy">
+                    <h1>WeddingWise AI</h1>
+                    <p>Your 3D wedding planning assistant for budgets, venues, rituals, vendors, and dreamy details.</p>
                 </div>
             </div>
+            <div class="status-pill" aria-label="Assistant status"><span class="pulse"></span> AI planner online</div>
+        </header>
 
-            <!-- Chat Area -->
-            <div class="chat-area">
-                <div class="image-preview" id="imagePreview">
+        <section class="main-grid">
+            <aside class="sidebar panel" aria-label="Planning shortcuts">
+                <div class="section-title">Quick Ideas <span>✨</span></div>
+                <div class="suggestions-list" id="suggestionsList">
+                    <button class="suggestion-chip" type="button">Loading ideas...</button>
+                </div>
+
+                <div class="planner-card">
+                    <div class="section-title">Planner Notes <span>🪄</span></div>
+                    <p>Ask about budgets, venue shortlists, rituals, decor themes, vendor questions, day timelines, or honeymoon planning.</p>
+                    <div class="mini-stats" aria-label="Planner highlights">
+                        <div class="mini-stat"><strong>24/7</strong><small>Planning help</small></div>
+                        <div class="mini-stat"><strong>3D</strong><small>Polished UI</small></div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="chat-shell panel" aria-label="Wedding planning chat">
+                <div class="hero-strip">
                     <img id="weddingImage" class="wedding-img" src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg" alt="Wedding inspiration">
+                    <div class="hero-overlay">
+                        <h2>Plan the wedding<br>that feels like you.</h2>
+                        <div class="hero-badge">Live inspiration preview</div>
+                    </div>
                 </div>
 
                 <div class="chat-messages" id="chatMessages">
                     <div class="message ai">
-                        <div class="avatar">💒</div>
+                        <div class="avatar" aria-hidden="true">💐</div>
                         <div class="bubble">
                             Hello! I'm WeddingWise AI 💍✨<br><br>
-                            I'm here to help you plan your perfect wedding! Whether you need budget tips, venue suggestions, decoration ideas, or help with rituals and traditions - just ask away!<br><br>
-                            What would you like to know about planning your dream wedding? 🎉
+                            I can help with budget planning, venue ideas, decor themes, rituals, vendor questions, and a clean wedding-day timeline.<br><br>
+                            What would you like to plan first?
                         </div>
                     </div>
                 </div>
 
                 <div class="input-area">
-                    <input type="text" id="chatInput" class="chat-input" placeholder="Ask me anything about wedding planning..." onkeypress="handleKeyPress(event)">
-                    <button id="sendBtn" class="send-btn" onclick="sendMessage()">Send 💬</button>
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Ask me anything about wedding planning..." onkeypress="handleKeyPress(event)" autocomplete="off">
+                    <button id="sendBtn" class="send-btn" onclick="sendMessage()" type="button">Send 💬</button>
                 </div>
-            </div>
-        </div>
+            </section>
+        </section>
 
-        <div class="footer">
-            <p>💍 WeddingWise AI | Plan Your Dream Wedding | Powered by Groq AI</p>
-        </div>
-    </div>
+        <footer class="footer">💍 WeddingWise AI | Powered by Groq AI</footer>
+    </main>
 
     <script>
         let isLoading = false;
+        const API_BASE = window.location.hostname.includes('onrender.com') ? 'https://ai-wedding-planner.onrender.com' : '';
 
-        // Load suggestions on page load
         async function loadSuggestions() {
             try {
-                const response = await fetch('https://ai-wedding-planner.onrender.com/suggestions');
+                const response = await fetch(`${API_BASE}/suggestions`);
                 const data = await response.json();
                 if (data.success && data.suggestions) {
                     const suggestionsDiv = document.getElementById('suggestionsList');
-                    suggestionsDiv.innerHTML = data.suggestions.map(s => 
-                        `<div class="suggestion-chip" onclick="sendSuggestion('${escapeHtml(s)}')">💡 ${escapeHtml(s)}</div>`
-                    ).join('');
+                    suggestionsDiv.innerHTML = '';
+                    data.suggestions.forEach((suggestion) => {
+                        const button = document.createElement('button');
+                        button.type = 'button';
+                        button.className = 'suggestion-chip';
+                        button.textContent = `💡 ${suggestion}`;
+                        button.addEventListener('click', () => sendSuggestion(suggestion));
+                        suggestionsDiv.appendChild(button);
+                    });
                 }
             } catch (error) {
                 console.error('Failed to load suggestions:', error);
@@ -405,15 +678,16 @@
             const messagesDiv = document.getElementById('chatMessages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
-            
+
             const avatar = document.createElement('div');
             avatar.className = 'avatar';
-            avatar.textContent = isUser ? '👤' : '💒';
-            
+            avatar.setAttribute('aria-hidden', 'true');
+            avatar.textContent = isUser ? '👤' : '💐';
+
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
-            bubble.innerHTML = text.replace(/\n/g, '<br>');
-            
+            bubble.innerHTML = escapeHtml(text).replace(/\n/g, '<br>');
+
             messageDiv.appendChild(avatar);
             messageDiv.appendChild(bubble);
             messagesDiv.appendChild(messageDiv);
@@ -426,8 +700,8 @@
             typingDiv.className = 'message ai';
             typingDiv.id = 'typingIndicator';
             typingDiv.innerHTML = `
-                <div class="avatar">💒</div>
-                <div class="typing"><span></span><span></span><span></span></div>
+                <div class="avatar" aria-hidden="true">💐</div>
+                <div class="typing" aria-label="WeddingWise is typing"><span></span><span></span><span></span></div>
             `;
             messagesDiv.appendChild(typingDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -440,50 +714,51 @@
 
         async function sendMessage() {
             if (isLoading) return;
-            
+
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
             if (!message) return;
-            
+
             isLoading = true;
             const sendBtn = document.getElementById('sendBtn');
             sendBtn.disabled = true;
-            
+            sendBtn.textContent = 'Planning...';
+
             addMessage(message, true);
             input.value = '';
             showTypingIndicator();
-            
+
             try {
-                const response = await fetch('https://ai-wedding-planner.onrender.com/chat', {
+                const response = await fetch(`${API_BASE}/chat`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: message })
+                    body: JSON.stringify({ message })
                 });
-                
+
                 const data = await response.json();
                 removeTypingIndicator();
-                
+
                 if (data.success) {
                     addMessage(data.reply, false);
-                    
+
                     if (data.image_url) {
                         const img = document.getElementById('weddingImage');
                         img.src = data.image_url;
                     }
                 } else {
-                    addMessage("Sorry, I'm having trouble right now. Please try again. 💒", false);
+                    addMessage("Sorry, I'm having trouble right now. Please try again. 💍", false);
                 }
             } catch (error) {
                 removeTypingIndicator();
-                addMessage("Network error. Please check your connection and try again. 💍", false);
+                addMessage('Network error. Please check your connection and try again. 💍', false);
             }
-            
+
             isLoading = false;
             sendBtn.disabled = false;
+            sendBtn.textContent = 'Send 💬';
             input.focus();
         }
 
-        // Load suggestions on page load
         loadSuggestions();
     </script>
 </body>
