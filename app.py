@@ -5,6 +5,12 @@ import os
 import requests
 import traceback
 
+def api_request(method, url, **kwargs):
+    """Make external API calls without inheriting broken local proxy settings."""
+    with requests.Session() as session:
+        session.trust_env = False
+        return session.request(method, url, **kwargs)
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -25,7 +31,7 @@ def get_wedding_image(query):
         url = "https://api.pexels.com/v1/search"
         headers = {"Authorization": PEXELS_API_KEY}
         params = {"query": f"wedding {query}", "per_page": 5, "orientation": "landscape"}
-        response = requests.get(url, headers=headers, params=params, timeout=10)
+        response = api_request("GET", url, headers=headers, params=params, timeout=10)
         if response.status_code == 200:
             data = response.json()
             if data.get("photos"):
@@ -48,9 +54,10 @@ def chat():
             return jsonify({'success': False, 'error': 'Please enter a message!'}), 400
         
         print(f"\n💬 User: {user_message}")
-        
+        if not GROQ_API_KEY:
+            return jsonify({'success': False, 'error': 'GROQ_API_KEY is missing in .env'}), 500
+
         # Direct API call to Groq (without groq library)
-        import json
         
         url = "https://api.groq.com/openai/v1/chat/completions"
         headers = {
@@ -76,7 +83,7 @@ Be warm and supportive. Use emojis occasionally. Keep responses concise (4-5 sen
             "max_tokens": 500
         }
         
-        response = requests.post(url, headers=headers, json=payload, timeout=30)
+        response = api_request("POST", url, headers=headers, json=payload, timeout=30)
         
         if response.status_code == 200:
             result = response.json()
