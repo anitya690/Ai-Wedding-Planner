@@ -371,7 +371,7 @@
         // Load suggestions on page load
         async function loadSuggestions() {
             try {
-                const response = await fetch('/suggestions');
+                const response = await fetch('https://ai-wedding-planner.onrender.com/suggestions');
                 const data = await response.json();
                 if (data.success && data.suggestions) {
                     const suggestionsDiv = document.getElementById('suggestionsList');
@@ -454,7 +454,7 @@
             showTypingIndicator();
             
             try {
-                const response = await fetch('/chat', {
+                const response = await fetch('https://ai-wedding-planner.onrender.com/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: message })
